@@ -10,7 +10,7 @@ namespace MastodonViewer
 {
 	public class MastodonViewerWindow : EditorWindow
 	{
-		private static readonly string s_URL = @"https://unityjp-mastodon.tokyo/api/v1/timelines/public";
+		private static readonly string s_URL = @"https://unityjp-mastodon.tokyo/api/v1/timelines/public?local=true";
 
 		private static Dictionary<string, Avatar> _Avatars = new Dictionary<string, Avatar>();
 
