@@ -3,7 +3,7 @@ Unity JP Mastodonのタイムラインを表示するだけのエディタ拡張
 
 ## 使い方
 
- * メニューのWindow > Mastodon Viewをクリック。
+ * メニューのWindow > Mastodon Viewerをクリック。
  * MastodonViewerウィンドウの更新ボタンをクリック。
 
 ## Unityバージョン
