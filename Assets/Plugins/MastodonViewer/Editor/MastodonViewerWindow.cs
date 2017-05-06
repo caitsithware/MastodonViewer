@@ -286,7 +286,6 @@ namespace MastodonViewer
 
 									foreach( XmlNode pNode in xmlDoc.GetElementsByTagName( "p" ) )
 									{
-										Debug.Log( pNode.Name );
 										XmlNode n = xmlDoc.CreateTextNode( pNode.InnerText + "\n" );
 										pNode.ParentNode.ReplaceChild( n, pNode );
 									}
