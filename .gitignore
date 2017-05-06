@@ -1,0 +1,11 @@
+#Unity
+Library/
+Temp/
+Obj/
+
+*.pidb
+*.csproj
+*.unityproj
+*.booproj
+
+*.sln
