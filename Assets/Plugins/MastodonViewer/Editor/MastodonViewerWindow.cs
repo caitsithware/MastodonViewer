@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Xml;
 using UnityEngine;
 using UnityEditor;
@@ -21,8 +19,10 @@ namespace MastodonViewer
 
 			static Styles()
 			{
-				entryBackEven = (GUIStyle)"CN EntryBackEven";
-				entryBackOdd = (GUIStyle)"CN EntryBackOdd";
+				entryBackEven = new GUIStyle((GUIStyle)"CN EntryBackEven");
+				entryBackEven.margin = new RectOffset(0,0,0,0);
+				entryBackOdd = new GUIStyle((GUIStyle)"CN EntryBackOdd");
+				entryBackOdd.margin = new RectOffset( 0, 0, 0, 0 );
 			}
 		}
 
@@ -144,6 +144,7 @@ namespace MastodonViewer
 			public string created_at;
 			public Account account;
 			public string content;
+			public string url;
 
 			private bool m_InitializedCreatedAt = false;
 			private DateTime m_CreatedAt;
@@ -234,11 +235,11 @@ namespace MastodonViewer
 					foreach( Status status in m_TimeLine.statuses )
 					{
 						GUIStyle style = ( index % 2 == 0 ) ? Styles.entryBackEven : Styles.entryBackOdd;
-						using( new EditorGUILayout.VerticalScope( style ) )
+						using( EditorGUILayout.VerticalScope virticalScope = new EditorGUILayout.VerticalScope( style ) )
 						{
 							using( new EditorGUILayout.HorizontalScope() )
 							{
-								GUILayout.Label( status.account.avatarTexture, GUILayout.Width( 120 ), GUILayout.Height( 120 ) );
+								GUILayout.Label( status.account.avatarTexture, GUILayout.Width( 48 ), GUILayout.Height( 48 ) );
 
 								using( new EditorGUILayout.VerticalScope() )
 								{
@@ -258,9 +259,13 @@ namespace MastodonViewer
 										{
 											time = status.span.Hours + "時間前";
 										}
-										else
+										else if( status.span.Minutes >= 1 )
 										{
 											time = status.span.Minutes + "分前";
+										}
+										else
+										{
+											time = status.span.Seconds + "秒前";
 										}
 
 										EditorGUILayout.LabelField( time );
@@ -288,6 +293,14 @@ namespace MastodonViewer
 
 									EditorGUILayout.LabelField( xmlDoc.InnerText, EditorStyles.wordWrappedLabel );
 								}
+							}
+
+							EditorGUILayout.Separator();
+
+							Event current = Event.current;
+							if( current.type == EventType.MouseDown && virticalScope.rect.Contains( current.mousePosition ) )
+							{
+								Application.OpenURL( status.url );
 							}
 						}
 
