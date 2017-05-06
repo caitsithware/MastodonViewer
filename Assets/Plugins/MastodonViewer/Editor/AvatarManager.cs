@@ -6,7 +6,8 @@ namespace MastodonViewer
 {
 	public class AvatarManager : ScriptableSingleton<AvatarManager> , ISerializationCallbackReceiver
 	{
-		private List<Avatar> m_Avatars;
+		[SerializeField]
+		private List<Avatar> m_Avatars = new List<Avatar>();
 
 		private Dictionary<string, Avatar> m_DicAvatars = new Dictionary<string, Avatar>();
 
