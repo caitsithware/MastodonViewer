@@ -3,6 +3,8 @@ Library/
 Temp/
 Obj/
 
+.vs/
+
 *.pidb
 *.csproj
 *.unityproj
