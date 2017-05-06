@@ -267,8 +267,24 @@ namespace MastodonViewer
 									}
 
 									XmlDocument xmlDoc = new XmlDocument();
-									xmlDoc.PreserveWhitespace = true;
-									xmlDoc.LoadXml( "<content>" + status.content.Replace( "<br />", "\n" ) + "</content>" );
+									xmlDoc.XmlResolver = null;
+
+									string content = status.content.Replace( "<br>", "<br />" );
+									
+									xmlDoc.LoadXml( "<content>" + content + "</content>" );
+
+									foreach( XmlNode brNode in xmlDoc.GetElementsByTagName( "br" ) )
+									{
+										XmlNode n = xmlDoc.CreateTextNode( "\n" );
+										brNode.ParentNode.ReplaceChild( n, brNode );
+									}
+
+									foreach( XmlNode pNode in xmlDoc.GetElementsByTagName( "p" ) )
+									{
+										Debug.Log( pNode.Name );
+										XmlNode n = xmlDoc.CreateTextNode( pNode.InnerText + "\n" );
+										pNode.ParentNode.ReplaceChild( n, pNode );
+									}
 
 									EditorGUILayout.LabelField( xmlDoc.InnerText, EditorStyles.wordWrappedLabel );
 								}
