@@ -4,11 +4,11 @@ using UnityEngine;
 namespace MastodonViewer
 {
 	[Serializable]
-	public class Avatar
+	public class Media
 	{
 		private string m_Url;
-		private WWW m_WWWAvatarTexture;
-		private Texture2D m_AvatarTexture;
+		private WWW m_WWWMediaTexture;
+		private Texture2D m_MediaTexture;
 
 		public string url
 		{
@@ -27,31 +27,31 @@ namespace MastodonViewer
 			}
 		}
 
-		public Texture2D avatarTexture
+		public Texture2D mediaTexture
 		{
 			get
 			{
-				return m_AvatarTexture;
+				return m_MediaTexture;
 			}
 		}
 
-		public Avatar( string url )
+		public Media( string url )
 		{
 			m_Url = url;
-			m_WWWAvatarTexture = new WWW( url );
+			m_WWWMediaTexture = new WWW( url );
 		}
 
 		public bool Update()
 		{
 			bool updated = false;
 
-			if( m_WWWAvatarTexture != null && m_WWWAvatarTexture.isDone )
+			if( m_WWWMediaTexture != null && m_WWWMediaTexture.isDone )
 			{
-				m_AvatarTexture = m_WWWAvatarTexture.texture as Texture2D;
+				m_MediaTexture = m_WWWMediaTexture.texture as Texture2D;
 
-				m_WWWAvatarTexture.Dispose();
+				m_WWWMediaTexture.Dispose();
 
-				m_WWWAvatarTexture = null;
+				m_WWWMediaTexture = null;
 
 				updated = true;
 				m_IsDone = true;
