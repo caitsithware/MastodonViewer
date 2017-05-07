@@ -13,7 +13,7 @@ namespace MastodonViewer
 		private static readonly System.Globalization.CultureInfo s_CalcureInfo = new System.Globalization.CultureInfo( "ja-JP" );
 		const double s_UpdateInterval = 10 * 60;
 		const double s_RepaintInterval = 1 * 60;
-		const double s_APIAccessInterval = 10;
+		const double s_APIAccessInterval = 30;
 
 		[MenuItem( "Window/Mastodon Viewer" )]
 		static void Open()
@@ -155,6 +155,7 @@ namespace MastodonViewer
 
 		private WWW m_WWWTimelines = null;
 		private Timeline m_TimeLine = null;
+		private string m_Error = null;
 		private bool m_Back = false;
 		private Vector2 m_ScrollPos;
 		private double m_UpdateTimer;
@@ -181,9 +182,15 @@ namespace MastodonViewer
 
 			if( m_WWWTimelines != null && m_WWWTimelines.isDone )
 			{
-				if( m_TimeLine == null )
+				if( !string.IsNullOrEmpty( m_WWWTimelines.error ) )
+				{
+					m_Error = m_WWWTimelines.error;
+				}
+				else if( m_TimeLine == null )
 				{
 					m_TimeLine = JsonUtility.FromJson<Timeline>( "{ \"statuses\": " + m_WWWTimelines.text + " }" );
+
+					m_Error = null;
 				}
 				else
 				{
@@ -197,6 +204,8 @@ namespace MastodonViewer
 					{
 						m_TimeLine.statuses.InsertRange( 0, timeline.statuses );
 					}
+
+					m_Error = null;
 				}
 
 				m_WWWTimelines.Dispose();
@@ -330,6 +339,11 @@ namespace MastodonViewer
 
 		void DrawTimeline()
 		{
+			if( !string.IsNullOrEmpty( m_Error ) )
+			{
+				EditorGUILayout.HelpBox( m_Error, MessageType.Error );
+			}
+
 			if( m_TimeLine == null )
 			{
 				return;
